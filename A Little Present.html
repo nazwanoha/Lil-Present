@@ -3292,101 +3292,32 @@ body [class*="rounded-3xl"][class*="bg-"]{
   -webkit-backdrop-filter: blur(5px) !important;
 }
 </style>
-
-<script>
-(function(){
-  const BGM_SRC = "https://drive.google.com/uc?export=download&id=1JWT8NTZzdtZxMOumWo3K_0TZVbbP2hBQ";
-
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  let audioCtx = null;
-  let isMuted = false;
-  let bgmStarted = false;
-
-  const bgmAudio = document.createElement("audio");
-  bgmAudio.loop = true;
-  bgmAudio.volume = 0.28;
-  if (BGM_SRC) bgmAudio.src = BGM_SRC;
-  document.body.appendChild(bgmAudio);
-
-  function ensureContext(){
-    if (!AudioCtx) return null;
-    if (!audioCtx) audioCtx = new AudioCtx();
-    if (audioCtx.state === "suspended") audioCtx.resume();
-    return audioCtx;
-  }
-
-  function syncMuteFromDom(){
-    const txt = document.body.innerText || "";
-    isMuted = /sound\s*off/i.test(txt) && !/sound\s*on/i.test(txt);
-    bgmAudio.muted = isMuted;
-  }
-
-  function playTone(freq = 587.33, duration = 0.14, type = "sine", gainVal = 0.08, delay = 0){
-    syncMuteFromDom();
-    if (isMuted) return;
-    const ctx = ensureContext();
-    if (!ctx) return;
-
-    const now = ctx.currentTime + delay;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, now);
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(gainVal, now + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + duration + 0.02);
-  }
-
-  function playClickSfx(){
-    playTone(659.25, 0.10, "sine", 0.07, 0);
-    playTone(880.00, 0.12, "triangle", 0.05, 0.045);
-  }
-
-  function playSceneSfx(){
-    playTone(523.25, 0.18, "sine", 0.06, 0);
-    playTone(659.25, 0.18, "sine", 0.06, 0.07);
-    playTone(783.99, 0.24, "triangle", 0.05, 0.14);
-  }
-
-  function tryStartBgm(){
-    syncMuteFromDom();
-    if (!BGM_SRC || isMuted || bgmStarted) return;
-    bgmAudio.play().then(() => {
-      bgmStarted = true;
-    }).catch(() => {});
-  }
-
-  document.addEventListener("click", (e) => {
-    tryStartBgm();
-    const btn = e.target.closest("button, [role='button']");
-    if (!btn) return;
-
-    const label = (btn.innerText || "").trim().toLowerCase();
-    if (label.includes("sound")) {
-      setTimeout(() => {
-        syncMuteFromDom();
-        if (!isMuted && BGM_SRC) {
-          bgmAudio.play().catch(() => {});
-        }
-      }, 40);
-      return;
-    }
-
-    if (label.includes("yes") || label.includes("no") || label.includes("next") || label.includes("lanjut")) {
-      playSceneSfx();
-    } else {
-      playClickSfx();
-    }
-  }, true);
-
-  setInterval(syncMuteFromDom, 500);
-})();
 </script>
+
+  <audio id="bgm" src="./bgm.trip.mpeg" loop preload="auto"></audio>
+  <button id="musicBtn" type="button" onclick="toggleMusic()">Play Music</button>
+
+  <script>
+    const bgm = document.getElementById("bgm");
+    const btn = document.getElementById("musicBtn");
+
+    function toggleMusic() {
+      if (bgm.paused) {
+        bgm.play();
+        btn.textContent = "Pause Music";
+      } else {
+        bgm.pause();
+        btn.textContent = "Play Music";
+      }
+    }
+
+    document.addEventListener("click", () => {
+      if (bgm.paused) {
+        bgm.play().then(() => {
+          btn.textContent = "Pause Music";
+        }).catch(() => {});
+      }
+    }, { once: true });
+  </script>
 </body>
 </html>
