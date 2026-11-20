@@ -148,17 +148,6 @@
   pointer-events: none !important;
   visibility: hidden !important;
 }
-/* Transisi halus saat bar informasi ditutup atau dibuka */
-.hud-collapsible {
-  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s;
-}
-
-.hud-hidden {
-  opacity: 0 !important;
-  transform: translateY(-20px) scale(0.97) !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
-}
 </style>
 </head>
 <body class="relative w-full h-full overflow-hidden">
@@ -1180,7 +1169,7 @@ function renderFukuokaMorning(t) {
     ctx.fill();
   });
 
-  drawChibiBoy(ctx, W * 0.5, H * 0.75, { scale: 1.32, happy: true, t });
+  drawChibiBoy(ctx, W * 0.5, H * 0.68, { scale: 1.15, happy: true, t });
   drawPetals(t);
 }
 
@@ -1894,17 +1883,18 @@ function goToScene(sceneName) {
 /* --- SCENE 0: TITLE UI --- */
 function renderTitleUI() {
   uiLayer.innerHTML = `
-    <div class="pointer-events-auto anime-card max-w-[330px] w-full p-4 sm:p-5 text-center animate-float mt-auto mb-3 sm:mb-5">
-      <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#F6D2DC]/75 text-[#575A60] text-[11px] font-semibold mb-1.5">
+    <div class="pointer-events-auto max-w-[330px] w-full px-3 py-2 text-center animate-float mt-auto mb-3 sm:mb-5"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.95), 0 0 4px rgba(255, 255, 255, 0.95);">
+      <div class="font-body text-[11px] font-semibold tracking-wide text-[#8A7869] mb-1">
         ✨ Interactive Anime Journey
       </div>
       <h2 class="font-header text-lg sm:text-xl font-bold text-[#575A60] mb-1">
         🌕 21th Birthday Trip
       </h2>
-      <p class="font-body text-sm text-[#575A60] mb-3.5 leading-snug">
+      <p class="font-body text-sm font-medium text-[#575A60] mb-3.5 leading-snug">
         “Do you want to go on a Mini Birthday Trip?”
       </p>
-      <div class="flex items-center justify-center gap-3">
+      <div class="flex items-center justify-center gap-3" style="text-shadow: none;">
         <button id="btnYes" class="anime-btn anime-btn-primary px-6 py-2 text-sm font-semibold">
           Yes 🚆
         </button>
@@ -1931,17 +1921,20 @@ function renderTitleUI() {
 /* --- SCENE 0B: DECLINED NIGHT ENDING UI --- */
 function renderDeclinedUI() {
   uiLayer.innerHTML = `
-    <div class="pointer-events-auto anime-card max-w-[330px] w-full p-5 text-center mt-auto mb-6">
+    <div class="pointer-events-auto max-w-[330px] w-full px-3 py-2 text-center mt-auto mb-6"
+         style="text-shadow: 0 2px 10px rgba(28, 37, 56, 0.9), 0 0 4px rgba(0, 0, 0, 0.65);">
       <div class="text-3xl mb-1.5">🌕✨</div>
-      <h2 class="font-header text-2xl font-bold text-[#575A60] mb-1.5">
+      <h2 class="font-header text-2xl font-bold text-[#FFFAF2] mb-1.5">
         Happy Birthday!
       </h2>
-      <p class="font-body text-sm text-[#8A7869] mb-4">
+      <p class="font-body text-sm text-[#F6EAD4] mb-4">
         May your 21st year shine as gently and brightly as the full moon tonight.
       </p>
-      <button id="btnBackTitle" class="anime-btn px-5 py-1.5 text-xs font-semibold">
-        ↺ Return to Morning
-      </button>
+      <div style="text-shadow: none;">
+        <button id="btnBackTitle" class="anime-btn px-5 py-1.5 text-xs font-semibold">
+          ↺ Return to Morning
+        </button>
+      </div>
     </div>
   `;
   document.getElementById('btnBackTitle').addEventListener('click', () => {
@@ -1953,8 +1946,9 @@ function renderDeclinedUI() {
 /* --- SCENE 1: STATION UI --- */
 function renderStationUI() {
   uiLayer.innerHTML = `
-    <div class="pointer-events-none anime-card max-w-[330px] px-4 py-2 text-center mt-auto mb-4">
-      <p class="font-body text-xs sm:text-sm text-[#575A60]">
+    <div class="pointer-events-none max-w-[330px] px-3 py-1.5 text-center mt-auto mb-4"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.95), 0 0 4px rgba(255, 255, 255, 0.95);">
+      <p class="font-body text-xs sm:text-sm font-semibold text-[#575A60]">
         Morning train arriving at Fukuoka Station... Boarding soon! 🚃
       </p>
     </div>
@@ -1970,38 +1964,37 @@ function renderTrainMapUI() {
     const isCurrent = i === idx;
     const isDone = i < idx;
     return `
-      <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl transition-all ${
-        isCurrent ? 'bg-[#7A9FDC]/25 border border-[#7A9FDC]/70' : isDone ? 'bg-[#DDEFCA]/35 opacity-80' : 'bg-[#FFFAF2]/30'
-      }">
-        <div class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 ${
-          isDone ? 'bg-[#C2C395] text-white' : isCurrent ? 'bg-[#7A9FDC] text-white' : 'bg-[#BADBF0]/80 text-[#575A60]'
-        }">
+      <div class="flex items-center gap-2 py-1 transition-all ${isDone ? 'opacity-70' : ''}">
+        <div class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 shadow-sm ${
+          isDone ? 'bg-[#C2C395] text-white' : isCurrent ? 'bg-[#7A9FDC] text-white' : 'bg-[#FFFAF2]/85 text-[#575A60]'
+        }" style="text-shadow: none;">
           ${isDone ? '✓' : i + 1}
         </div>
         <div class="text-left flex-1 min-w-0">
           <div class="font-header font-bold text-xs text-[#575A60] truncate">${d.name} <span class="font-jp font-normal text-[11px] text-[#8A7869]">(${d.jp})</span></div>
-          <div class="font-body text-[11px] text-[#575A60] truncate">${d.desc}</div>
+          <div class="font-body text-[11px] font-medium text-[#575A60] truncate">${d.desc}</div>
         </div>
-        ${isCurrent ? '<span class="text-[10px] font-semibold text-[#575A60] px-1.5 py-0.5 rounded-full bg-white/60 shrink-0">Next</span>' : ''}
+        ${isCurrent ? '<span class="text-[10px] font-bold text-[#575A60] px-2 py-0.5 rounded-full bg-[#FFFAF2]/80 shrink-0" style="text-shadow: none;">Next</span>' : ''}
       </div>
     `;
   }).join('');
 
   uiLayer.innerHTML = `
-    <div class="pointer-events-auto anime-card max-w-[360px] w-full p-3.5 sm:p-4 ml-auto mr-0 sm:mr-4 mt-auto mb-3 sm:my-auto">
+    <div class="pointer-events-auto max-w-[350px] w-full px-3 py-2 ml-auto mr-0 sm:mr-4 mt-auto mb-3 sm:my-auto"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.96), 0 0 4px rgba(255, 255, 255, 0.96);">
       <div class="flex items-center justify-between gap-2 mb-2">
         <div>
           <h2 class="font-header text-sm sm:text-base font-bold text-[#575A60]">🗺️ Birthday Trip Route</h2>
-          <p class="font-body text-[11px] text-[#8A7869]">Passing fields, mountains & sea...</p>
+          <p class="font-body text-[11px] font-medium text-[#8A7869]">Passing fields, mountains & sea...</p>
         </div>
-        <div class="px-2.5 py-0.5 rounded-full bg-[#F6D2DC] text-[#575A60] font-bold text-xs shrink-0">
+        <div class="px-2.5 py-0.5 rounded-full bg-[#F6D2DC] text-[#575A60] font-bold text-xs shrink-0" style="text-shadow: none;">
           <span id="trainCountdown">10</span>s
         </div>
       </div>
-      <div class="space-y-1.5 mb-2.5">
+      <div class="space-y-1 mb-2.5">
         ${stopsHtml}
       </div>
-      <div class="flex justify-end">
+      <div class="flex justify-end" style="text-shadow: none;">
         <button id="skipWaitBtn" class="anime-btn px-3.5 py-1 text-xs font-semibold">
           Arrive Now ➔
         </button>
@@ -2041,20 +2034,21 @@ function renderMountFujiGameUI() {
   const blockColors = ['#97B6E0', '#BADBF0', '#C4E7E6', '#DDEFCA', '#F6EAD4', '#F6D2DC', '#F5AAC8', '#FFFAF2'];
 
   uiLayer.innerHTML = `
-    <div id="fujiCard" class="pointer-events-auto anime-card max-w-[330px] w-full p-3.5 sm:p-4 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:my-auto">
+    <div id="fujiCard" class="pointer-events-auto max-w-[330px] w-full px-3 py-2 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:my-auto"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.96), 0 0 4px rgba(255, 255, 255, 0.96);">
       <h2 class="font-header text-base sm:text-lg font-bold text-[#575A60] mb-0.5">🗻 Climb Mount Fuji</h2>
-      <p id="fujiPrompt" class="font-body text-xs text-[#575A60] mb-2">
+      <p id="fujiPrompt" class="font-body text-xs font-medium text-[#575A60] mb-2">
         Stack 8 blocks to reach the snowy summit!
       </p>
 
-      <div class="relative mx-auto w-[280px] max-w-full h-[200px] rounded-xl overflow-hidden border border-white/70 bg-[#FFFAF2]/25 mb-2.5">
+      <div class="relative mx-auto w-[280px] max-w-full h-[200px] rounded-xl overflow-hidden bg-[#FFFAF2]/20 mb-2.5">
         <canvas id="fujiMiniCanvas" width="280" height="200" class="w-full h-full block"></canvas>
-        <div class="absolute top-1.5 right-2 px-2 py-0.5 rounded-full bg-white/65 text-[11px] font-bold text-[#575A60]">
+        <div class="absolute top-1.5 right-2 px-2 py-0.5 rounded-full bg-white/75 text-[11px] font-bold text-[#575A60]" style="text-shadow: none;">
           <span id="fujiHeightCount">0</span> / ${TARGET_BLOCKS}
         </div>
       </div>
 
-      <div id="fujiControls" class="flex justify-center">
+      <div id="fujiControls" class="flex justify-center" style="text-shadow: none;">
         <button id="dropBlockBtn" class="anime-btn anime-btn-primary px-6 py-2 text-xs sm:text-sm font-semibold">
           Place Block 🧱
         </button>
@@ -2177,11 +2171,11 @@ function showFujiCakeReward() {
 
   const card = document.getElementById('fujiCard');
   card.innerHTML = `
-    <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#DDEFCA] text-[#575A60] text-[11px] font-bold mb-1">
+    <div class="font-body text-[11px] font-bold text-[#8A7869] mb-1">
       🏔️ Summit Reached!
     </div>
     <h2 class="font-header text-base sm:text-lg font-bold text-[#575A60] mb-1">Birthday Cake at the Peak!</h2>
-    <p id="cakeStatusText" class="font-body text-xs text-[#8A7869] mb-2">
+    <p id="cakeStatusText" class="font-body text-xs font-medium text-[#575A60] mb-2">
       Make a wish and blow out the 21st birthday candles!
     </p>
 
@@ -2207,7 +2201,7 @@ function showFujiCakeReward() {
       </svg>
     </div>
 
-    <div id="cakeBtnGroup" class="flex justify-center">
+    <div id="cakeBtnGroup" class="flex justify-center" style="text-shadow: none;">
       <button id="blowCandleBtn" class="anime-btn anime-btn-primary px-5 py-2 text-xs sm:text-sm font-semibold">
         💨 Blow Out Candles
       </button>
@@ -2262,18 +2256,19 @@ function renderKamakuraGameUI() {
   let selectedCell = [0, 1];
 
   uiLayer.innerHTML = `
-    <div id="kamakuraCard" class="pointer-events-auto anime-card max-w-[320px] w-full p-3.5 sm:p-4 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:my-auto">
-      <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#BADBF0]/55 text-[#575A60] text-[11px] font-semibold mb-1">
+    <div id="kamakuraCard" class="pointer-events-auto max-w-[320px] w-full px-3 py-2 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:my-auto"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.96), 0 0 4px rgba(255, 255, 255, 0.96);">
+      <div class="font-body text-[11px] font-semibold text-[#8A7869] mb-1">
         🌊 Seaside Crossing
       </div>
       <h2 class="font-header text-base sm:text-lg font-bold text-[#575A60] mb-0.5">Kamakura Sudoku</h2>
-      <p id="sudokuHint" class="font-body text-xs text-[#575A60] mb-2.5">
+      <p id="sudokuHint" class="font-body text-xs font-medium text-[#575A60] mb-2.5">
         Fill rows, columns & 2×2 boxes with 1–4 for a gift!
       </p>
 
-      <div id="sudokuGrid" class="grid grid-cols-4 gap-1 w-44 h-44 mx-auto p-1.5 rounded-xl bg-[#97B6E0]/20 border border-white/70 mb-2.5"></div>
+      <div id="sudokuGrid" class="grid grid-cols-4 gap-1 w-44 h-44 mx-auto p-1.5 rounded-xl bg-[#97B6E0]/20 mb-2.5" style="text-shadow: none;"></div>
 
-      <div class="flex justify-center gap-1.5">
+      <div class="flex justify-center gap-1.5" style="text-shadow: none;">
         ${[1, 2, 3, 4].map(n => `
           <button data-num="${n}" class="num-pad-btn anime-btn w-9 h-9 font-bold text-sm">${n}</button>
         `).join('')}
@@ -2293,7 +2288,7 @@ function renderKamakuraGameUI() {
         const isSel = selectedCell[0] === r && selectedCell[1] === c;
         const isWrong = val !== 0 && val !== solution[r][c];
 
-        const boxTint = ((Math.floor(r / 2) + Math.floor(c / 2)) % 2 === 0) ? 'bg-[#FFFAF2]/65' : 'bg-[#F6EAD4]/65';
+        const boxTint = ((Math.floor(r / 2) + Math.floor(c / 2)) % 2 === 0) ? 'bg-[#FFFAF2]/75' : 'bg-[#F6EAD4]/75';
 
         const cell = document.createElement('button');
         cell.className = `rounded-lg font-bold text-sm flex items-center justify-center transition-all ${boxTint} ${
@@ -2348,19 +2343,21 @@ function showKamakuraBouquetReward() {
 
   const card = document.getElementById('kamakuraCard');
   card.innerHTML = `
-    <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#DDEFCA] text-[#575A60] text-[11px] font-bold mb-1">
+    <div class="font-body text-[11px] font-bold text-[#8A7869] mb-1">
       🌻 Puzzle Solved!
     </div>
     <h2 class="font-header text-base sm:text-lg font-bold text-[#575A60] mb-1">
       Rustic Sunflower & White Rose Bouquet
     </h2>
-    <p class="font-body text-xs text-[#8A7869] mb-2.5">
+    <p class="font-body text-xs font-medium text-[#575A60] mb-2.5">
       Sunflowers, white roses & dried rustic blossoms. Enjoy the sea breeze!
     </p>
-    <div class="text-3xl mb-3 animate-float">🌻🤍🌾</div>
-    <button id="kamakuraNextBtn" class="anime-btn anime-btn-primary px-6 py-1.5 text-sm font-semibold">
-      Next ➔
-    </button>
+    <div class="text-3xl mb-3 animate-float" style="text-shadow: none;">🌻🤍🌾</div>
+    <div style="text-shadow: none;">
+      <button id="kamakuraNextBtn" class="anime-btn anime-btn-primary px-6 py-1.5 text-sm font-semibold">
+        Next ➔
+      </button>
+    </div>
   `;
 
   document.getElementById('kamakuraNextBtn').addEventListener('click', () => {
@@ -2375,18 +2372,21 @@ function renderShrineSequenceUI() {
   let waitSec = 10;
 
   uiLayer.innerHTML = `
-    <div id="shrineCard" class="pointer-events-auto anime-card max-w-[330px] w-full p-3.5 sm:p-4 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:mb-5">
-      <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#F6EAD4] text-[#8A7869] text-[11px] font-semibold mb-1">
+    <div id="shrineCard" class="pointer-events-auto max-w-[330px] w-full px-3 py-2 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:mb-5"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.96), 0 0 4px rgba(255, 255, 255, 0.96);">
+      <div class="font-body text-[11px] font-semibold text-[#8A7869] mb-1">
         ⛩️ Sunny Afternoon • 2:30 PM
       </div>
       <h2 class="font-header text-base sm:text-lg font-bold text-[#575A60] mb-1">Kawagoe Hikawa Shrine</h2>
-      <p class="font-body text-xs text-[#8A7869] mb-2.5">
+      <p class="font-body text-xs font-medium text-[#575A60] mb-2.5">
         Enjoying the golden breeze & wind chimes...<br/>
         Yukata menu opens in <span id="shrineWaitNum" class="font-bold text-[#575A60]">10</span>s
       </p>
-      <button id="openYukataNowBtn" class="anime-btn px-4 py-1.5 text-xs font-semibold">
-        Choose Yukata Now 👘
-      </button>
+      <div style="text-shadow: none;">
+        <button id="openYukataNowBtn" class="anime-btn px-4 py-1.5 text-xs font-semibold">
+          Choose Yukata Now 👘
+        </button>
+      </div>
     </div>
   `;
 
@@ -2404,8 +2404,8 @@ function renderShrineSequenceUI() {
 
     card.innerHTML = `
       <h2 class="font-header text-base font-bold text-[#575A60] mb-0.5">👘 Choose Your Yukata</h2>
-      <p class="font-body text-xs text-[#8A7869] mb-2.5">Pick a yukata to wear around the shrine:</p>
-      <div class="grid grid-cols-2 gap-2">
+      <p class="font-body text-xs font-medium text-[#575A60] mb-2.5">Pick a yukata to wear around the shrine:</p>
+      <div class="grid grid-cols-2 gap-2" style="text-shadow: none;">
         ${optionsHtml}
       </div>
     `;
@@ -2436,18 +2436,21 @@ function renderShrineSequenceUI() {
 function showFurinWishMenu(chosenYukata) {
   const card = document.getElementById('shrineCard');
   card.innerHTML = `
-    <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#DDEFCA] text-[#575A60] text-[11px] font-semibold mb-1">
+    <div class="font-body text-[11px] font-semibold text-[#8A7869] mb-1">
       Wearing ${chosenYukata.name} 👘
     </div>
     <h2 class="font-header text-base font-bold text-[#575A60] mb-0.5">🎐 Write a Furin Wish</h2>
-    <p class="font-body text-xs text-[#8A7869] mb-2">
+    <p class="font-body text-xs font-medium text-[#575A60] mb-2">
       Write your 21st birthday wish to hang on a wind chime:
     </p>
     <input id="wishInput" type="text" maxlength="60" placeholder="Wishing for warmth & happiness..."
-      class="w-full px-3 py-1.5 rounded-xl bg-[#FFFAF2]/55 border border-white/80 text-xs text-[#575A60] placeholder-[#8A7869] focus:outline-none focus:ring-2 focus:ring-[#F5AAC8] mb-2.5" />
-    <button id="hangFurinBtn" class="anime-btn anime-btn-primary px-5 py-1.5 text-xs sm:text-sm font-semibold">
-      Hang Furin Chime 🎐
-    </button>
+      style="text-shadow: none;"
+      class="w-full px-3 py-1.5 rounded-xl bg-[#FFFAF2]/75 text-xs text-[#575A60] placeholder-[#8A7869] focus:outline-none focus:ring-2 focus:ring-[#F5AAC8] mb-2.5" />
+    <div style="text-shadow: none;">
+      <button id="hangFurinBtn" class="anime-btn anime-btn-primary px-5 py-1.5 text-xs sm:text-sm font-semibold">
+        Hang Furin Chime 🎐
+      </button>
+    </div>
   `;
 
   document.getElementById('hangFurinBtn').addEventListener('click', () => {
@@ -2459,12 +2462,14 @@ function showFurinWishMenu(chosenYukata) {
     setTimeout(() => sound.playFurinChime(), 450);
 
     card.innerHTML = `
-      <div class="text-2xl mb-1 animate-float">🎐✨</div>
+      <div class="text-2xl mb-1 animate-float" style="text-shadow: none;">🎐✨</div>
       <h2 class="font-header text-base font-bold text-[#575A60] mb-0.5">Furin Hung in the Breeze!</h2>
-      <p class="font-body italic text-xs text-[#8A7869] mb-2.5">“${val}”</p>
-      <button id="shrineNextBtn" class="anime-btn anime-btn-primary px-6 py-1.5 text-sm font-semibold">
-        Next ➔
-      </button>
+      <p class="font-body italic text-xs font-medium text-[#575A60] mb-2.5">“${val}”</p>
+      <div style="text-shadow: none;">
+        <button id="shrineNextBtn" class="anime-btn anime-btn-primary px-6 py-1.5 text-sm font-semibold">
+          Next ➔
+        </button>
+      </div>
     `;
 
     document.getElementById('shrineNextBtn').addEventListener('click', () => {
@@ -2492,21 +2497,22 @@ function renderLakeSuwaCreatorUI() {
   ];
 
   uiLayer.innerHTML = `
-    <div id="suwaCard" class="pointer-events-auto anime-card max-w-[330px] w-full p-3.5 sm:p-4 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:my-auto">
-      <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#F6D2DC] text-[#575A60] text-[11px] font-semibold mb-1">
+    <div id="suwaCard" class="pointer-events-auto max-w-[330px] w-full px-3 py-2 text-center ml-auto mr-0 sm:mr-5 mt-auto mb-3 sm:my-auto"
+         style="text-shadow: 0 2px 10px rgba(255, 250, 242, 0.96), 0 0 4px rgba(255, 255, 255, 0.96);">
+      <div class="font-body text-[11px] font-semibold text-[#8A7869] mb-1">
         🌅 Twilight • 18:30 • Lake Suwa
       </div>
       <h2 class="font-header text-base sm:text-lg font-bold text-[#575A60] mb-0.5">🎆 Craft Your Firework</h2>
-      <p class="font-body text-xs text-[#8A7869] mb-2.5">
+      <p class="font-body text-xs font-medium text-[#575A60] mb-2.5">
         Choose the shape & color for tonight's opening firework!
       </p>
 
       <div class="mb-2.5 text-left">
         <label class="block text-[11px] font-bold text-[#575A60] mb-1">1. Shape</label>
-        <div class="grid grid-cols-2 gap-1.5">
+        <div class="grid grid-cols-2 gap-1.5" style="text-shadow: none;">
           ${shapes.map(s => `
             <button data-shape="${s.id}" class="fw-shape-btn anime-btn py-1.5 px-2 text-xs font-semibold ${
-              GAME_STATE.customFirework.shape === s.id ? 'ring-2 ring-[#7A9FDC] bg-[#BADBF0]/40' : ''
+              GAME_STATE.customFirework.shape === s.id ? 'ring-2 ring-[#7A9FDC] bg-[#BADBF0]/60' : ''
             }">${s.label}</button>
           `).join('')}
         </div>
@@ -2514,18 +2520,20 @@ function renderLakeSuwaCreatorUI() {
 
       <div class="mb-3 text-left">
         <label class="block text-[11px] font-bold text-[#575A60] mb-1">2. Color</label>
-        <div class="flex items-center justify-between gap-1.5">
+        <div class="flex items-center justify-between gap-1.5" style="text-shadow: none;">
           ${colors.map(c => `
-            <button data-color="${c.hex}" title="${c.name}" class="fw-color-btn w-8 h-8 rounded-full border-2 border-white shadow transition-transform hover:scale-110 ${
+            <button data-color="${c.hex}" title="${c.name}" class="fw-color-btn w-8 h-8 rounded-full shadow transition-transform hover:scale-110 ${
               GAME_STATE.customFirework.color === c.hex ? 'ring-2 ring-[#575A60] scale-110' : ''
             }" style="background-color: ${c.hex};"></button>
           `).join('')}
         </div>
       </div>
 
-      <button id="startHanabiBtn" class="anime-btn anime-btn-primary w-full py-2 text-xs sm:text-sm font-semibold">
-        Sit & Watch Hanabi ✨
-      </button>
+      <div style="text-shadow: none;">
+        <button id="startHanabiBtn" class="anime-btn anime-btn-primary w-full py-2 text-xs sm:text-sm font-semibold">
+          Sit & Watch Hanabi ✨
+        </button>
+      </div>
     </div>
   `;
 
@@ -2533,8 +2541,8 @@ function renderLakeSuwaCreatorUI() {
     btn.addEventListener('click', () => {
       sound.playPop();
       GAME_STATE.customFirework.shape = btn.dataset.shape;
-      document.querySelectorAll('.fw-shape-btn').forEach(b => b.classList.remove('ring-2', 'ring-[#7A9FDC]', 'bg-[#BADBF0]/40'));
-      btn.classList.add('ring-2', 'ring-[#7A9FDC]', 'bg-[#BADBF0]/40');
+      document.querySelectorAll('.fw-shape-btn').forEach(b => b.classList.remove('ring-2', 'ring-[#7A9FDC]', 'bg-[#BADBF0]/60'));
+      btn.classList.add('ring-2', 'ring-[#7A9FDC]', 'bg-[#BADBF0]/60');
     });
   });
 
@@ -2552,87 +2560,93 @@ function renderLakeSuwaCreatorUI() {
     startLakeSuwaHanabiSequence();
   });
 }
-
-function startLakeSuwaHanabiSequence() {
-  uiLayer.innerHTML = '';
-  GAME_STATE.hanabiActive = true;
-  GAME_STATE.hanabiTimer = 0;
-  sound.setMode('suwa_hanabi');
-
-  setTimeout(() => {
-    GAME_STATE.girlVisible = true;
-  }, 1500);
-
-  setTimeout(() => {
-    GAME_STATE.girlSpeech = 'お誕生日おめでとう';
-    sound.playFurinChime();
-
-    setTimeout(() => {
-      launchFirework(
-        W * 0.5,
-        H * 0.24,
-        GAME_STATE.customFirework.shape,
-        GAME_STATE.customFirework.color,
-        true
-      );
-      startHanabiShowLoop();
-    }, 1000);
-  }, 3400);
-}
-
 function startHanabiShowLoop() {
-  const palette = ['#F5AAC8', '#BADBF0', '#DDEFCA', '#FFD166', '#F6D2DC', '#FFFAF2', '#C4E7E6'];
-  const shapes = ['ring', 'star', 'willow', 'heart'];
-  let elapsed = 0;
+  let step = 0;
+  const shapes = ['heart', 'star', 'ring', 'willow'];
+  const palette = ['#F5AAC8', '#BADBF0', '#DDEFCA', '#F6EAD4', '#FFD166'];
 
-  setTimeout(() => {
-    GAME_STATE.girlSpeech = '';
-  }, 5500);
-
-  const showInterval = setInterval(() => {
+  const interval = setInterval(() => {
     if (GAME_STATE.scene !== 'SUWA') {
-      clearInterval(showInterval);
+      clearInterval(interval);
       return;
     }
 
-    elapsed += 1.25;
-    GAME_STATE.hanabiTimer = elapsed;
+    step++;
+    const xPos = W * (0.2 + ((step * 0.19) % 0.6));
+    const yPos = H * (0.18 + (step % 3) * 0.08);
+    const shape = shapes[step % shapes.length];
+    const color = palette[step % palette.length];
+    launchFirework(xPos, yPos, shape, color, false);
 
-    const count = Math.random() > 0.55 ? 2 : 1;
-    for (let i = 0; i < count; i++) {
-      const rx = W * (0.18 + Math.random() * 0.64);
-      const ry = H * (0.14 + Math.random() * 0.26);
-      const col = palette[Math.floor(Math.random() * palette.length)];
-      const shp = shapes[Math.floor(Math.random() * shapes.length)];
-      launchFirework(rx, ry, shp, col, false);
-    }
-
-    if (elapsed >= 34) {
-      clearInterval(showInterval);
+    if (step === 6) {
+      clearInterval(interval);
       setTimeout(() => {
-        presentHandwrittenScroll();
-      }, 2200);
+        if (GAME_STATE.scene === 'SUWA') {
+          presentHandwrittenScroll();
+        }
+      }, 1500);
     }
   }, 1250);
 }
 
+function startLakeSuwaHanabiSequence() {
+  clearTimers();
+  uiLayer.innerHTML = '';
+
+  GAME_STATE.hanabiActive = true;
+  GAME_STATE.hanabiTimer = 0;
+  GAME_STATE.girlVisible = false;
+  GAME_STATE.girlX = W * 0.45 + 210;
+  GAME_STATE.girlSpeech = '';
+  GAME_STATE.girlFading = false;
+  GAME_STATE.girlAlpha = 1;
+  GAME_STATE.scrollReady = false;
+
+  sound.setMode('suwa_hanabi');
+
+  setTimeout(() => {
+    if (GAME_STATE.scene !== 'SUWA') return;
+    GAME_STATE.girlVisible = true;
+  }, 1500);
+
+  setTimeout(() => {
+    if (GAME_STATE.scene !== 'SUWA') return;
+    GAME_STATE.girlSpeech = 'お誕生日おめでとう';
+    sound.playFurinChime();
+  }, 3400);
+
+  setTimeout(() => {
+    if (GAME_STATE.scene !== 'SUWA') return;
+    launchFirework(
+      W * 0.5,
+      H * 0.24,
+      GAME_STATE.customFirework.shape,
+      GAME_STATE.customFirework.color,
+      true
+    );
+    startHanabiShowLoop();
+  }, 4400);
+}
 function presentHandwrittenScroll() {
   GAME_STATE.girlSpeech = '';
   GAME_STATE.scrollReady = true;
   sound.playFurinChime();
 
   uiLayer.innerHTML = `
-    <div class="pointer-events-auto anime-card max-w-[310px] w-full p-3.5 text-center animate-glow mb-auto mt-16">
-      <div class="text-2xl mb-1 animate-float">📜</div>
-      <h3 class="font-header text-sm sm:text-base font-bold text-[#575A60] mb-0.5">
+    <div class="pointer-events-auto max-w-[310px] w-full px-3 py-2 text-center mb-auto mt-16"
+         style="text-shadow: 0 2px 10px rgba(24, 34, 54, 0.92), 0 0 4px rgba(0, 0, 0, 0.7);">
+      <div class="text-2xl mb-1 animate-float" style="text-shadow: none;">📜</div>
+      <h3 class="font-header text-sm sm:text-base font-bold text-[#FFFAF2] mb-0.5">
         A Handwritten Letter
       </h3>
-      <p class="font-body text-xs text-[#8A7869] mb-2.5">
+      <p class="font-body text-xs text-[#F6EAD4] mb-2.5">
         She turns toward you with a gentle smile and hands you a rolled letter.
       </p>
-      <button id="openScrollBtn" class="anime-btn anime-btn-primary px-5 py-1.5 text-xs sm:text-sm font-semibold">
-        Open & Read Letter ✉️
-      </button>
+      <div style="text-shadow: none;">
+        <button id="openScrollBtn" class="anime-btn anime-btn-primary px-5 py-1.5 text-xs sm:text-sm font-semibold">
+          Open & Read Letter ✉️
+        </button>
+      </div>
     </div>
   `;
 
@@ -2644,20 +2658,20 @@ function presentHandwrittenScroll() {
 
 function showFullBirthdayLetter() {
   uiLayer.innerHTML = `
-    <div class="pointer-events-auto max-w-lg w-full max-h-[72vh] flex flex-col rounded-2xl p-4 sm:p-6 shadow-2xl border-2 border-white/75 backdrop-blur-md"
-         style="background: linear-gradient(180deg, rgba(255,250,242,0.52) 0%, rgba(245,241,232,0.52) 100%); text-shadow: 0 1px 6px rgba(255, 250, 242, 0.95), 0 0 2px rgba(255, 255, 255, 0.95);">
-      <div class="flex items-center justify-between border-b border-[#C2C395]/60 pb-2 mb-3">
-        <span class="font-header text-sm sm:text-base font-bold text-[#575A60]">🌕 For Candra — 21st Birthday</span>
-        <span class="text-base">🌻</span>
+    <div class="pointer-events-auto max-w-lg w-full max-h-[72vh] flex flex-col px-3 sm:px-5 py-2"
+         style="text-shadow: 0 2px 12px rgba(24, 34, 54, 0.95), 0 0 5px rgba(0, 0, 0, 0.75);">
+      <div class="flex items-center justify-between pb-2 mb-3">
+        <span class="font-header text-sm sm:text-base font-bold text-[#FFFAF2]">🌕 For Candra — 21st Birthday</span>
+        <span class="text-base" style="text-shadow: none;">🌻</span>
       </div>
 
       <div class="custom-scroll overflow-y-auto pr-2 text-left">
-        <p class="font-handwriting text-lg sm:text-xl md:text-2xl text-[#575A60] leading-relaxed tracking-wide">
+        <p class="font-handwriting text-lg sm:text-xl md:text-2xl text-[#FFFAF2] leading-relaxed tracking-wide">
           “Selamat Bertambah Usia Candra! Semoga segala bentuk baiknya dunia dan akhirat selalu dan selamanya menyertai langkah kakimu kemanapun kamu pergi, semoga kedepannya lebih banyak tawa dan suka cita yang bisa membuat senyummu merekah dengan indah seperti bulan purnama, semoga segala urusan dan hal hal yang sedang kamu usahakan diberikan kemudahan agar bisa segera tercapai, dan jika tidak, maka semoga Allah ganti dengan yang lebih baik, panjang umur dan sehat selalu yaaa, aamiin 10000000X! Terimakasih sudah terlahir dan bertahan didunia ini ya! terimakasih juga karena sudah selalu menjadi baik dan banyak berbagi energi positif didunia ini! Kamu sangat amat luar biasa keren!!! So proud!!! wish you enjoy your birthday ya!🌻”
         </p>
       </div>
 
-      <div class="mt-3.5 pt-2.5 border-t border-[#C2C395]/50 flex justify-center">
+      <div class="mt-3.5 pt-2.5 flex justify-center" style="text-shadow: none;">
         <button id="finishLetterBtn" class="anime-btn anime-btn-primary px-6 py-1.5 text-xs sm:text-sm font-semibold">
           Close Letter ✨
         </button>
@@ -3156,24 +3170,6 @@ function toggleUiLayer() {
 }
 </style>
 
-<script>
-(function(){
-  const frame=document.getElementById('frame');
-  if(!frame)return;
-  for(let i=0;i<18;i++){
-    const sp=document.createElement('span');
-    sp.className='shinkai-spark';
-    const size=4+Math.random()*6;
-    sp.style.width=size+'px';
-    sp.style.height=size+'px';
-    sp.style.left=(Math.random()*94)+'%';
-    sp.style.top=(25+Math.random()*68)+'%';
-    sp.style.animationDuration=(6+Math.random()*7)+'s';
-    sp.style.animationDelay=(-Math.random()*8)+'s';
-    frame.appendChild(sp);
-  }
-})();
-</script>
 <style>
 /* Nuansa pencahayaan & atmosfer Kimi no Na wa di lapisan latar */
 body{
@@ -3265,59 +3261,8 @@ body{
 })();
 </script>
 
-<style>
-/* Tetap di tengah horizontal, tapi naik ke area tengah-atas agar karakter di bawah tidak tertutup */
-body .fixed.inset-0.flex.items-center,
-body [class*="inset-0"][class*="items-center"]{
-  display: flex !important;
-  justify-content: center !important;
-  align-items: flex-start !important;
-  padding-top: clamp(72px, 15vh, 130px) !important;
-  padding-bottom: 20px !important;
-}
-
-/* Kartu dibuat lebih ringkas & semi-transparan agar karakter tetap jelas */
-body [class*="backdrop-blur"],
-body .card,
-body [class*="rounded-2xl"][class*="bg-"],
-body [class*="rounded-3xl"][class*="bg-"]{
-  max-height: 32vh !important;
-  overflow-y: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-  background-color: rgba(255, 250, 240, 0.78) !important;
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
-}
-</style>
-</script>
-
   <audio id="bgm" src="./bgm.trip.mpeg" loop preload="auto"></audio>
   <button id="musicBtn" type="button" onclick="toggleMusic()">Play Music</button>
 
-  <script>
-    const bgm = document.getElementById("bgm");
-    const btn = document.getElementById("musicBtn");
-
-    function toggleMusic() {
-      if (bgm.paused) {
-        bgm.play();
-        btn.textContent = "Pause Music";
-      } else {
-        bgm.pause();
-        btn.textContent = "Play Music";
-      }
-    }
-
-    document.addEventListener("click", () => {
-      if (bgm.paused) {
-        bgm.play().then(() => {
-          btn.textContent = "Pause Music";
-        }).catch(() => {});
-      }
-    }, { once: true });
-  </script>
 </body>
 </html>
